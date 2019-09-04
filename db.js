@@ -22,7 +22,6 @@ const User2_Name = faker.name.firstName()
 const User3_Name = faker.name.firstName()
 const User4_Name = faker.name.firstName()
 
-console.log(ids.Dep1_id)
 const SQL = `
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS departments;
@@ -44,14 +43,9 @@ INSERT INTO departments(id, name) VALUES ('${ids.Dep3_id}', '${Dep3_Name}');
 INSERT INTO departments(id, name) VALUES ('${ids.Dep4_id}', '${Dep4_Name}');
 
 INSERT INTO users(id, name, department_id) VALUES ('${ids.User1_id}', '${User1_Name}','${ids.Dep1_id}');
-INSERT INTO users(id, name, department_id) VALUES ('${ids.User2_id}', '${User2_Name}','${ids.Dep3_id}');
-INSERT INTO users(id, name, department_id) VALUES ('${ids.User3_id}', '${User3_Name}','${ids.Dep2_id}');
+INSERT INTO users(id, name, department_id) VALUES ('${ids.User2_id}', '${User2_Name}','${ids.Dep2_id}');
+INSERT INTO users(id, name, department_id) VALUES ('${ids.User3_id}', '${User3_Name}','${ids.Dep1_id}');
 INSERT INTO users(id, name) VALUES ('${ids.User4_id}', '${User4_Name}');
-
-SELECT departments.id as department_id
-
-
-
 `
 
 const sync = async() => {
@@ -59,5 +53,19 @@ const sync = async() => {
     console.log('success')
 }
 
-sync()
-.catch(ex => console.log(ex));
+const getAllDepartments = async() => {
+    const response = await client.query('SELECT * FROM departments');
+    return response.rows;
+}
+
+const getAllUsers = async() => {
+    const response = await client.query('SELECT * FROM users');
+    return response.rows;
+}
+
+
+module.exports = {
+    sync,
+    getAllDepartments,
+    getAllUsers
+};
